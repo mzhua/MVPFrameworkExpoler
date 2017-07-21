@@ -7,13 +7,19 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 /**
- * Created by hua on 2017/7/20.
+ *
+ * @author hua
+ * @date 2017/7/20
  */
 
 public abstract class BaseActivity<V extends IBaseView, P extends IBasePresenter> extends AppCompatActivity implements IBaseView{
 
     private P mPresenter;
 
+    /**
+     * 创建Presenter
+     * @return
+     */
     public abstract P createPresenter();
 
     public P getPresenter() {
@@ -32,8 +38,8 @@ public abstract class BaseActivity<V extends IBaseView, P extends IBasePresenter
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        P presenter = securePresenter(createPresenter());
-        presenter.onAttached((V) this);
+        mPresenter = securePresenter(createPresenter());
+        mPresenter.onAttached(this);
     }
 
     @CallSuper
@@ -41,7 +47,7 @@ public abstract class BaseActivity<V extends IBaseView, P extends IBasePresenter
     protected void onDestroy() {
         super.onDestroy();
         P presenter = securePresenter(mPresenter);
-        presenter.onDetached((V) this);
+        presenter.onDetached(this);
     }
 
     private P securePresenter(P presenter) {

@@ -1,13 +1,12 @@
 package im.hua.mvpframework.first.impl;
 
 import im.hua.mvpframework.first.BasePresenter;
-import im.hua.mvpframework.first.IBaseView;
 
 /**
  * Created by hua on 2017/7/21.
  */
 
-public class FirstPresenter extends BasePresenter<IFirstView> implements IFirstPresenter {
+public class FirstPresenter extends BasePresenter<IFirstView> implements IFirstPresenter<IFirstView> {
     private IExpressionPresenter mExpressionPresenter = new ExpressionPresenter();
 
     private IFavPresenter mFavPresenter = new FavPresenter();

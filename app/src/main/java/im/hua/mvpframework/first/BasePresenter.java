@@ -1,20 +1,19 @@
 package im.hua.mvpframework.first;
 
-import org.reactivestreams.Subscription;
-
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
+import org.reactivestreams.Subscription;
 
 /**
  * Created by hua on 2017/7/20.
  */
 
-public class BasePresenter<V extends IBaseView> implements IBasePresenter{
+public class BasePresenter<V extends IBaseView> implements IBasePresenter<V>{
     private List<Subscription> mSubscriptions = new ArrayList<>();
-    private WeakReference<IBaseView> mWeakView;
+    private WeakReference<V> mWeakView;
 
     public void excute(Observable observable, Subscription subscriber, boolean autoDestory) {
         if (autoDestory) {
@@ -23,12 +22,12 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter{
     }
 
     @Override
-    public void onAttached(IBaseView view) {
+    public void onAttached(V view) {
         mWeakView = new WeakReference<>(view);
     }
 
     @Override
-    public void onDetached(IBaseView view) {
+    public void onDetached(V view) {
         for (Subscription subscriber : mSubscriptions) {
             subscriber.cancel();
         }
@@ -41,7 +40,8 @@ public class BasePresenter<V extends IBaseView> implements IBasePresenter{
         mWeakView = null;
     }
 
+    @Override
     public V getView() {
-        return (V)mWeakView.get();
+        return mWeakView.get();
     }
 }
